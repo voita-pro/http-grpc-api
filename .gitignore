@@ -1,0 +1,17 @@
+# Editor/IDE
+.idea
+.vscode
+.junie/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# env file
+.env
+
+# Firebase
+firebase.json
+
+# Test binary, built with `go test -c`
+*.test
