@@ -74,7 +74,7 @@ func (a *Service) Run() error {
 		// Start GRPC server
 		log.Info().Str("addr", grpcHostPort).Msg("gRPC server listening")
 		if err := grpcServer.Serve(grpcLis); err != nil {
-			log.Fatal().Err(err).Msg("gRPC serve failed")
+			log.Panic().Err(err).Msg("gRPC serve failed")
 		}
 	}()
 
@@ -104,7 +104,7 @@ func (a *Service) Run() error {
 		// Start HTTP server
 		log.Info().Str("addr", httpHostPort).Msg("HTTP server listening")
 		if err := httpSrv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal().Err(err).Msg("http serve failed")
+			log.Panic().Err(err).Msg("http serve failed")
 		}
 	}()
 

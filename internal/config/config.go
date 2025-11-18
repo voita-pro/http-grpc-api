@@ -78,7 +78,7 @@ func load() error {
 	}
 	err := godotenv.Load(cfgEnv)
 	if err != nil {
-		log.Fatalf("can't parse config: %v", err)
+		log.Panicf("can't parse config: %v", err)
 	}
 	return nil
 }

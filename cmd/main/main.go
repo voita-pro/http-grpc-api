@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
-	"github.com/voita-pro/http-grpc-api/internal/app"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"github.com/voita-pro/http-grpc-api/internal/app"
 )
 
 func main() {
@@ -18,10 +19,10 @@ func main() {
 	defer stop()
 	a, err := app.NewApp(ctx)
 	if err != nil {
-		log.Fatal().Err(err).Msg("can't start application")
+		log.Panic().Err(err).Msg("can't start application")
 	}
 	err = a.Run()
 	if err != nil {
-		log.Fatal().Err(err).Msg("can't run application")
+		log.Panic().Err(err).Msg("can't run application")
 	}
 }
