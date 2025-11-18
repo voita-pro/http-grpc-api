@@ -1,0 +1,29 @@
+services:
+  application_db:
+    image: postgres:17-alpine
+    container_name: application_db
+    environment:
+      POSTGRES_USER: ${APP_DB_USER}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
+      POSTGRES_DB: ${APP_DB_NAME}
+    ports:
+      - 5435:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  application_api:
+    build: .
+    container_name: application_api
+    volumes:
+      - ./.env:/app/.env
+      - ./firebase.json:/app/firebase.json
+    ports:
+      - "8989:8080"
+      - "5001:5001"
+    depends_on:
+      - application_db
+
+
+
+
+    

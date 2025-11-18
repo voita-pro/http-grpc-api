@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api.proto;
+
+option go_package = "pkg/pb;pb";
+
+message LoginIN {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginOUT {
+  string token = 1;
+}
+
+message CountryIN {
+  string title = 1;
+  string code = 2;
+  string iso_code = 3;
+}
+
+message Country {
+  int32 id = 1;
+  string title = 2;
+  string code = 3;
+  string iso_code = 4;
+}
+
+message CountriesOUT {
+  repeated Country data = 1;
+}
+
+
