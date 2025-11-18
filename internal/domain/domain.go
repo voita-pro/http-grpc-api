@@ -5,7 +5,7 @@ type TokenData struct {
 	Email         string `json:"email"`
 	EmailVerified bool   `json:"email_verified"`
 	DisplayName   string `json:"display_name"`
-	Role          string `json:"role"`
+	Roles         string `json:"roles"`
 }
 type Country struct {
 	Id      int32

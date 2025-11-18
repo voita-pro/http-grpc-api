@@ -17,7 +17,7 @@ func (s *service) SignIn(login domain.Login) (string, error) {
 	token, err := s.auth.CustomTokenWithClaims(s.ctx, md5Sum, map[string]interface{}{
 		"email": login.Email,
 		"uid":   md5Sum,
-		"role":  "user",
+		"roles": "user",
 	})
 	log.Info().Msgf("token: %s", token)
 	if err != nil {

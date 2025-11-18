@@ -35,7 +35,7 @@ func (s *serviceStub) VerifyToken(idToken string) (*domain.TokenData, error) {
 		Email:         claims["email"].(string),
 		EmailVerified: claims["email_verified"].(bool),
 		DisplayName:   claims["display_name"].(string),
-		Role:          claims["role"].(string),
+		Roles:         claims["roles"].(string),
 	}, nil
 }
 
@@ -50,7 +50,7 @@ func (s *serviceStub) SignIn(login domain.Login) (string, error) {
 		"uid":            uid,
 		"email_verified": false,
 		"display_name":   "Just User",
-		"role":           "user",
+		"roles":          "user",
 	})
 	if err != nil {
 		return "", err

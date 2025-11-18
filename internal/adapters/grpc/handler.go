@@ -30,16 +30,22 @@ func (s *Handler) GetTokenData(ctx context.Context) (*domain.TokenData, error) {
 		return nil, err
 	}
 	// Check token and get user claims
-	validUser, err := s.auth.VerifyToken(ctx, idToken)
+	tok, err := s.auth.VerifyToken(ctx, idToken)
 	if err != nil {
 		return nil, err
 	}
 	user := domain.TokenData{
-		UID:           validUser["uid"].(string),
-		Email:         validUser["email"].(string),
-		EmailVerified: validUser["email_verified"].(bool),
-		DisplayName:   validUser["display_name"].(string),
-		Role:          validUser["roles"].(string),
+		UID:   tok["uid"].(string),
+		Email: tok["email"].(string),
+	}
+	if ev, ok := tok["email_verified"].(bool); ok {
+		user.EmailVerified = ev
+	}
+	if un, ok := tok["name"].(string); ok {
+		user.DisplayName = un
+	}
+	if rl, ok := tok["roles"].(string); ok {
+		user.Roles = rl
 	}
 	return &user, nil
 }
@@ -66,11 +72,15 @@ func (s *Handler) Countries(ctx context.Context, in *emptypb.Empty) (*pb.Countri
 	}
 	out := pb.CountriesOUT{Data: make([]*pb.Country, 0, len(data))}
 	for _, item := range data {
-		out.Data = append(out.Data, &pb.Country{
+		outCnt := &pb.Country{
 			Id:    item.Id,
 			Title: item.Title,
 			Code:  item.Code,
-		})
+		}
+		if item.IsoCode != nil {
+			outCnt.IsoCode = *item.IsoCode
+		}
+		out.Data = append(out.Data, outCnt)
 	}
 	return &out, nil
 }
@@ -89,12 +99,15 @@ func (s *Handler) CountryAdd(ctx context.Context, in *pb.CountryIN) (*pb.Country
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Country{
-		Id:      res.Id,
-		Title:   res.Title,
-		Code:    res.Code,
-		IsoCode: *res.IsoCode,
-	}, nil
+	out := pb.Country{
+		Id:    res.Id,
+		Title: res.Title,
+		Code:  res.Code,
+	}
+	if res.IsoCode != nil {
+		out.IsoCode = *res.IsoCode
+	}
+	return &out, nil
 }
 
 // CountrySave
@@ -112,10 +125,14 @@ func (s *Handler) CountrySave(ctx context.Context, in *pb.Country) (*pb.Country,
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Country{
-		Id:      res.Id,
-		Title:   res.Title,
-		Code:    res.Code,
-		IsoCode: *res.IsoCode,
-	}, nil
+	out := pb.Country{
+		Id:    res.Id,
+		Title: res.Title,
+		Code:  res.Code,
+	}
+	if res.IsoCode != nil {
+		out.IsoCode = *res.IsoCode
+	}
+
+	return &out, nil
 }
